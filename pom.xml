@@ -40,6 +40,12 @@
 	</dependencyManagement>
 
 	<dependencies>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20210307</version>
+        </dependency>
+
 		<!-- Spring Boot Web Dependencies -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
