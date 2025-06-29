@@ -24,8 +24,20 @@ public class ProductService {
         products.add(new Product(3, "Product C", true, 3, null));
     }
 
-    public List<Product> getAll() {
-        return enrichWithSupplierInfo(new ArrayList<>(products));
+//    public List<Product> getAll() {
+//        return enrichWithSupplierInfo(new ArrayList<>(products));
+//    }
+
+    public List<Product> getAll(Boolean available) {
+        List<Product> filteredProducts = products;
+
+        if (available != null) {
+            filteredProducts = products.stream()
+                    .filter(product -> product.isAvailable() == available)
+                    .toList();
+        }
+
+        return enrichWithSupplierInfo(new ArrayList<>(filteredProducts));
     }
 
     public Optional<Product> getById(Integer id) {

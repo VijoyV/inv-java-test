@@ -1,12 +1,13 @@
 package uk.co.prodapt.inventory.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,11 +39,26 @@ public class InventoryController {
         this.productService = productService;
     }
 
-    @ApiResponse(responseCode = "200", description = "Returns list of all products", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Product.class))))
+//    @ApiResponse(responseCode = "200", description = "Returns list of all products", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Product.class))))
+//    @GetMapping
+//    public List<Product> list() {
+//        return productService.getAll();
+//    }
+
     @GetMapping
-    public List<Product> list() {
-        return productService.getAll();
+    @Operation(summary = "Get all products with or without filter", description = "Returns all products. Optionally filter by availability using ?available=true or false")
+    @ApiResponse(
+            responseCode = "200",
+            description = "Returns list of all products",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = Product.class)))
+    )
+    public List<Product> list(
+            @Parameter(description = "Filter products by availability (true/false)")
+            @RequestParam(required = false) Boolean available) {
+
+        return productService.getAll(available);
     }
+
 
     @ApiResponse(responseCode = "200", description = "Product returned", content = @Content(schema = @Schema(implementation = Product.class)))
     @GetMapping("/{id}")
