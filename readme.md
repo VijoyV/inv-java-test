@@ -220,22 +220,21 @@ INFO ...: Shutdown completed.
 
 The codebase is small and uses in-memory H2 storage — suitable for demos but not production. Below are improvements based on best practices.
 
----
 
 ### 1. Replace In-Memory List with JPA
 
 **Why:** Data resets on restart
-**How:**
 
+**How:**
 * Create `ProductRepository` using Spring Data JPA
 * Persist to H2/MySQL
 * Replace all `.add`, `.remove`, `.getAll` with repository methods
 
----
 
 ### 2. Add Unit & Integration Tests
 
-**Why:** No regression safety
+**Why:**  No regression safety
+
 **How:**
 
 * Use JUnit + Mockito for `ProductService`
@@ -246,34 +245,32 @@ The codebase is small and uses in-memory H2 storage — suitable for demos but n
 ### 3. Use DTOs & MapStruct
 
 **Why:** Directly exposing entity leaks internals
+
 **How:**
 
 * Create `ProductRequestDTO` & `ProductResponseDTO`
 * Use MapStruct to convert between entity and DTOs
 
----
-
 ### 4. Global Exception Handling
 
 **Why:** Raw exceptions are sent to clients
+
 **How:**
 
 * Create a `@ControllerAdvice` class
 * Return error JSON with:
   `timestamp`, `status`, `error`, `message`, `path`
 
----
-
 ### 5. Improve Swagger/OpenAPI Docs
 
 **Why:** Lacks parameter details
+
 **How:**
 
 * Use `@Parameter` with examples
 * Add `@Schema(example = "...")` in models
 * Add meaningful `@Operation` summaries
 
----
 
 ## Summary Table
 
@@ -285,6 +282,3 @@ The codebase is small and uses in-memory H2 storage — suitable for demos but n
 | Low      | Global Exception Handling    | API reliability & clarity      |
 | Low      | Enhance Swagger Docs         | Better developer experience    |
 
----
-
-Let me know if you'd like this converted into `.md`, `.pdf`, or `.docx` format.
