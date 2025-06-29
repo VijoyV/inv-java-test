@@ -3,6 +3,8 @@ package uk.co.prodapt.inventory.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList; // Task #2
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.co.prodapt.inventory.model.Product;
@@ -11,7 +13,13 @@ import uk.co.prodapt.inventory.model.Supplier;
 @Service
 public class ProductService {
 
-    private final List<Product> products = new ArrayList<>();
+    // Original
+    // private final List<Product> products = new ArrayList<>();
+
+    // Ref: Task #2
+    // Step -1: Use CopyOnWriteArrayList to Make Thread safe.
+    private final List<Product> products = new CopyOnWriteArrayList<>();
+
     private final SupplierService supplierService;
 
     @Autowired
@@ -28,17 +36,36 @@ public class ProductService {
 //        return enrichWithSupplierInfo(new ArrayList<>(products));
 //    }
 
+    // Ref: Task #1
+//    public List<Product> getAll(Boolean available) {
+//        List<Product> filteredProducts = products;
+//
+//        if (available != null) {
+//            filteredProducts = products.stream()
+//                    .filter(product -> product.isAvailable() == available)
+//                    .toList();
+//        }
+//
+//        return enrichWithSupplierInfo(new ArrayList<>(filteredProducts));
+//    }
+
+    // Ref: Task # 2
+    // Step 2. Ensure No Duplicates in Results
+    // Modify your getAll(Boolean available) method to include .distinct():
+
     public List<Product> getAll(Boolean available) {
         List<Product> filteredProducts = products;
 
         if (available != null) {
             filteredProducts = products.stream()
                     .filter(product -> product.isAvailable() == available)
+                    .distinct()
                     .toList();
         }
 
         return enrichWithSupplierInfo(new ArrayList<>(filteredProducts));
     }
+
 
     public Optional<Product> getById(Integer id) {
         return products.stream()

@@ -55,4 +55,21 @@ public class Product {
     public void setSupplierName(String supplierName) {
         this.supplierName = supplierName;
     }
+
+    // Code Improvement - Task #2
+    // Step -3: This ensures .distinct() works correctly and prevents equality issues during deduplication.
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id != null && id.equals(product.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
 }
