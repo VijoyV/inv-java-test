@@ -1,7 +1,3 @@
-Certainly! Here's the same content with all emojis removed, while preserving formatting and clarity:
-
----
-
 # Yezdi Roadstar Assignment
 
 **Original Repo:**
